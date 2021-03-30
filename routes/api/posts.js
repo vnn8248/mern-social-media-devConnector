@@ -51,4 +51,82 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
+// @route   GET api/posts/:post_id
+// @desc    Get a post by post id
+// @access  Private
+router.get("/:post_id", auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.post_id);
+
+    if (!post) {
+      return res.status(404).json({ msg: "No post found" });
+    }
+
+    res.json(post);
+  } catch (error) {
+    console.error(error.message);
+    if (error.kind === "ObjectId") {
+      return res.status(404).json({ msg: "No post found" });
+    }
+    res.status(500).json({ msg: "Server Error" });
+  }
+});
+
+// @route   PUT api/posts/like/:post_id
+// @desc    Like a post
+// @access  Private
+router.put("/like/:post_id", auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.post_id);
+
+    if (!post) {
+      return res.status(404).json({ msg: "No post found" });
+    }
+
+    // Check if user has liked the post already
+    if (post.likes.filter(like => like.user.toString() === req.user.id).length > 0) {
+      return res.status(400).json({ msg: "Post already liked" });
+    }
+
+    post.likes.push({ user: req.user.id });
+
+    await post.save();
+
+    res.json(post);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ msg: "Server Error" });
+  }
+});
+
+// @route   PUT api/posts/unlike/:post_id
+// @desc    Unlike a post
+// @access  Private
+router.put("/unlike/:post_id", auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.post_id);
+
+    if (!post) {
+      return res.status(404).json({ msg: "No post found" });
+    }
+
+    // Check if user has liked the post already
+    if (post.likes.filter(like => like.user.toString() === req.user.id).length === 0) {
+      return res.status(400).json({ msg: "Post hasn't been liked yet" });
+    }
+
+    // Get index to remove
+    const removeIndex = post.likes.map(like => like.user.toString()).indexOf(req.user.id);
+
+    post.likes.splice(removeIndex, 1);
+
+    await post.save();
+
+    res.json(post);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ msg: "Server Error" });
+  }
+});
+
 module.exports = router;
