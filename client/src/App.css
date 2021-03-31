@@ -40,6 +40,7 @@ img {
   margin: auto;
   overflow: hidden;
   padding: 0 2rem;
+  /* REMOVE LATER */
   margin-top: 6rem;
   margin-bottom: 3rem;
 }
