@@ -1,9 +1,10 @@
 import React, { useState, Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { createProfile } from '../../actions/profile';
 
-const CreateProfile = () => {
+const CreateProfile = ({ createProfile, history }) => {
   const [formData, setFormData] = useState({
     company: '',
     website: '',
@@ -38,6 +39,11 @@ const CreateProfile = () => {
 
   const handleChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  const onSubmit = e => {
+    e.preventDefault();
+    createProfile(formData, history)
+  };
+
   return (
     <Fragment>
       <h1 className="large text-primary">
@@ -48,7 +54,7 @@ const CreateProfile = () => {
         profile stand out
       </p>
       <small>* = required field</small>
-      <form className="form">
+      <form className="form" onSubmit={onSubmit}>
         <div className="form-group">
           <select name="status" value={status} onChange={handleChange}>
             <option value="0">* Select Professional Status</option>
@@ -84,7 +90,7 @@ const CreateProfile = () => {
           </small>
         </div>
         <div className="form-group">
-          <input type="text" placeholder="Skills" name="skills" value={skills} onChange={handleChange} />
+          <input type="text" placeholder="* Skills" name="skills" value={skills} onChange={handleChange} />
           <small className="form-text">
             Please use comma separated values (eg.HTML,CSS,JavaScript,PHP)
           </small>
@@ -111,6 +117,7 @@ const CreateProfile = () => {
           </button>
           <span>Optional</span>
         </div>
+
         {displaySocial && <Fragment>
           <div className="form-group social-input">
             <i className="fab fa-twitter fa-2x"></i>
@@ -146,8 +153,8 @@ const CreateProfile = () => {
 };
 
 CreateProfile.propTypes = {
-
+  createProfile: PropTypes.func.isRequired,
 };
 
 
-export default connect()(CreateProfile);
+export default connect(null, { createProfile })(withRouter(CreateProfile));
