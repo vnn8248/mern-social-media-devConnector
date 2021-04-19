@@ -13,7 +13,7 @@ const Profiles = ({ getAllProfiles, profile: {
 
   useEffect(() => {
     getAllProfiles();
-  }, []);
+  }, [getAllProfiles]);
 
   return (
     <Fragment>
