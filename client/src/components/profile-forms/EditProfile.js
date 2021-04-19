@@ -119,7 +119,8 @@ const EditProfile = ({ profile: { profile, loading }, createProfile, getCurrentP
             type="text"
             placeholder="Github Username"
             name="githubusername"
-            value={githubusername} onChange={handleChange}
+            value={githubusername}
+            onChange={handleChange}
           />
           <small className="form-text">
             If you want your latest repos and a Github link, include your username
