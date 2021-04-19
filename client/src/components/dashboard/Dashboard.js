@@ -24,7 +24,7 @@ const Dashboard = ({ getCurrentProfile, deleteAccount, auth: { user }, profile: 
       </p>
       {profile ?
         <Fragment>
-          <DashboardActions />
+          <DashboardActions profile={profile} />
           <Education education={profile.education} />
           <Experience experience={profile.experience} />
           <div className="my-2">

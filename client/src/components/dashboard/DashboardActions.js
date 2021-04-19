@@ -1,9 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const DashboardActions = () => {
+const DashboardActions = ({ profile: {
+  user: { _id }
+} }) => {
   return (
     <div class="dash-buttons">
+      <Link to={`/profiles/${_id}`} className="btn btn-dark">
+        <i className="fas fa-user-circle"></i> View Profile
+      </Link>
       <Link to="/edit-profile" className="btn btn-light">
         <i className="fas fa-user-circle text-primary"></i> Edit Profile
         </Link>
