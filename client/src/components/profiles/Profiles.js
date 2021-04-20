@@ -28,8 +28,9 @@ const Profiles = ({ getAllProfiles, profile: {
               <ProfileItem key={profile.id} profile={profile} />
             ))
           ) : (
-            <h4>No profiles found... </h4>
+            <Spinner />
           )}
+          {profiles.length === 0}
         </div>
       </Fragment>}
     </Fragment>
